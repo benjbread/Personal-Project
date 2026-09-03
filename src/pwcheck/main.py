@@ -6,6 +6,7 @@ from pwcheck.report import (
     full_report_dict,
     small_check,
     small_report_dict,
+    print_report,
 )
 
 parser = argparse.ArgumentParser(
@@ -32,13 +33,17 @@ args = parser.parse_args()
 
 def main():
     if (args.run_pwned and args.verbose_output) is True:
-        print(full_report_dict(getpass()))
+        report = full_report_dict(getpass()).copy()
+        print_report(report)
     elif (args.run_pwned is False) and (args.verbose_output is True):
-        print(small_report_dict(getpass()))
+        report = small_report_dict(getpass()).copy()
+        print_report(report)
     elif (args.run_pwned is True) and (args.verbose_output is False):
-        print(full_check(getpass()))
+        report = full_check(getpass()).copy()
+        print_report(report)
     else:
-        print(small_check(getpass()))
+        report = small_check(getpass()).copy()
+        print_report(report)
 
 
 if __name__ == "__main__":
