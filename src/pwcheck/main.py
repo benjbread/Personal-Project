@@ -30,7 +30,6 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-l
 def main():
     if (args.run_pwned and args.verbose_output) is True:
         print(full_report_dict(getpass()))
