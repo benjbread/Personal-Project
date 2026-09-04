@@ -4,9 +4,9 @@ from getpass import getpass
 from pwcheck.report import (
     full_check,
     full_report_dict,
+    print_report,
     small_check,
     small_report_dict,
-    print_report,
 )
 
 parser = argparse.ArgumentParser(
@@ -30,6 +30,7 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+
 
 def main():
     if (args.run_pwned and args.verbose_output) is True:
