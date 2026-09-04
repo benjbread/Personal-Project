@@ -1,12 +1,16 @@
 import unittest
 from unittest import TestCase
-from pwcheck.analysis import (check_length,
+
+from pwcheck.analysis import (
     check_chars_variety,
-    check_repeating_chars,
     check_common_list,
-    hash_password,
+    check_length,
+    check_repeating_chars,
     hash_first_five,
-    hash_last_thirty_five)
+    hash_last_thirty_five,
+    hash_password,
+)
+
 
 # Test assertations for check_length function
 class TestCheckLength(TestCase):
@@ -15,6 +19,7 @@ class TestCheckLength(TestCase):
         self.assertTrue(check_length("12345678"))
         # input should return False as password is less than 8 characters
         self.assertFalse(check_length("1234567"))
+
 
 # Test assertations for check_chars_variety function
 class TestCheckCharsVariety(TestCase):
@@ -26,6 +31,7 @@ class TestCheckCharsVariety(TestCase):
         # input should return False as password contains less than 3 variety checks
         self.assertFalse(check_chars_variety("password"))
 
+
 # Test assertations for check_repeating_chars function
 class TestCheckRepeatingChars(TestCase):
     def test_check_repeating_chars(self):
@@ -34,6 +40,7 @@ class TestCheckRepeatingChars(TestCase):
         # input should return False as password doesn't contain 3 (or more) of same character in a row
         self.assertFalse(check_repeating_chars("password"))
 
+
 # Test assertations for check_common_list function
 class TestCheckCommonList(TestCase):
     def test_check_common_list(self):
@@ -41,6 +48,7 @@ class TestCheckCommonList(TestCase):
         self.assertTrue(check_common_list("123456"))
         # input should return False as password is in common list
         self.assertFalse(check_common_list("EpicPass1!2@"))
+
 
 # Test assertations for hash_password function
 class TestHashPassword(TestCase):
@@ -51,6 +59,7 @@ class TestHashPassword(TestCase):
         # input should return False as "pass" hash doesnt match expected
         self.assertFalse(hash_password("pass") == expected)
 
+
 # Test assertations for hash_first_five function
 class TestHashFirstFive(TestCase):
     def test_hash_first_five(self):
@@ -59,6 +68,7 @@ class TestHashFirstFive(TestCase):
         self.assertTrue(hash_first_five("password") == expected)
         # input should return False as "pass" hash first five characters doesnt match expected
         self.assertFalse(hash_first_five("pass") == expected)
+
 
 # Test assertations for hash_last_thirty_five function
 class TestHashLastThirtyFive(TestCase):

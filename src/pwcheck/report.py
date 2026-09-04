@@ -7,12 +7,7 @@ from pwcheck.analysis import (
 from pwcheck.api import check_pwned
 
 
-def full_check(password: str) -> dict:
-    report = small_check(password).copy()
-    report.update({"pwned": check_pwned(password)})
-    return report
-
-
+# Creates dict with keys that will always exist
 def small_check(password: str) -> dict:
     report: dict = {
         "length": check_length(password),
@@ -23,17 +18,15 @@ def small_check(password: str) -> dict:
     return report
 
 
-def full_report_dict(password: str) -> dict:
-    report: dict = small_report_dict(password).copy()
+# Creates dict from small_check but adds pwned check key
+def full_check(password: str) -> dict:
+    report = small_check(password).copy()
     report.update({"pwned": check_pwned(password)})
-    if report["pwned"] is True:
-        report.update(
-            {"pwned reason": "Your password has appeared in a data breach"}
-        )
     return report
 
 
-def small_report_dict(password: str) -> dict:
+# Creates dict from small_check but adds keys for reason if failed
+def small_report(password: str) -> dict:
     report = small_check(password).copy()
 
     if report["length"] is False:
@@ -59,57 +52,12 @@ def small_report_dict(password: str) -> dict:
     return report
 
 
-# Prints the report dict in a more human readable format
-def print_report(report: dict) -> None:
-    print("==== Password Report ====\n")
-
-    # Length Test Report Output
-    print("-" * 25)
-    if report["length"] is True:
-        print("Length Test: PASSED")
-    if report["length"] is False:
-        print("Length Test: FAILED")
-        if "length reason" in report:
-            print(f"Reason: {report['length reason']}")
-    print("-" * 25 + "\n")
-
-    # Variety Test Report Output
-    print("-" * 25)
-    if report["variety"] is True:
-        print("Variety Test: PASSED")
-    if report["variety"] is False:
-        print("Variety Test: FAILED")
-        if "variety reason" in report:
-            print(f"Reason: {report['variety reason']}")
-    print("-" * 25 + "\n")
-
-    # Repeating Character Test Report Output
-    print("-" * 25)
-    if report["consecutive repeating characters"] is False:
-        print("No Repeating Characters Test: PASSED")
-    if report["consecutive repeating characters"] is True:
-        print("No Repeating Characters Test: FAILED")
-        if "repeating reason" in report:
-            print(f"Reason: {report['repeating reason']}")
-    print("-" * 25 + "\n")
-
-    # Common List Test Report Output
-    print("-" * 25)
-    if report["common list"] is False:
-        print("Common Password List Test: PASSED")
-    if report["common list"] is True:
-        print("Common Password List Test: FAILED")
-        if "common list reason" in report:
-            print(f"Reason: {report['common list reason']}")
-    print("-" * 25 + "\n")
-
-    # Pwned Test Report Output
-    print("-" * 25)
-    if "pwned" in report:
-        if report["pwned"] is False:
-            print("HaveIBeenPwned Test: PASSED")
-        if report["pwned"] is True:
-            print("HaveIBeenPwned Test: FAILED")
-            if "pwned reason" in report:
-                print(f"Reason: {report['pwned reason']}")
-    print("-" * 25 + "\n")
+# Creates dict from small_report but adds key for pwned and reason if failed
+def full_report(password: str) -> dict:
+    report: dict = small_report(password).copy()
+    report.update({"pwned": check_pwned(password)})
+    if report["pwned"] is True:
+        report.update(
+            {"pwned reason": "Your password has appeared in a data breach"}
+        )
+    return report
