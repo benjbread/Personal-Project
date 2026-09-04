@@ -5,6 +5,7 @@ from unittest.mock import patch
 from pwcheck.report import full_check, full_report, small_check, small_report
 
 
+# Test assertations for full_check function
 class TestFullCheck(TestCase):
     @patch("pwcheck.api.urllib.request.urlopen")
     def test_full_check(self, mock_check_pwned):
@@ -25,6 +26,7 @@ class TestFullCheck(TestCase):
         )
 
 
+# Test assertations for full_report function
 class TestFullReport(TestCase):
     @patch("pwcheck.api.urllib.request.urlopen")
     def test_full_report(self, mock_check_pwned):
@@ -48,6 +50,7 @@ class TestFullReport(TestCase):
         )
 
 
+# Test assertations for small_check function
 class TestSmallCheck(TestCase):
     def test_small_check(self):
         self.assertDictEqual(
@@ -61,6 +64,7 @@ class TestSmallCheck(TestCase):
         )
 
 
+# Test assertations for small_report function
 class TestSmallReport(TestCase):
     def test_small_report(self):
         self.assertDictEqual(

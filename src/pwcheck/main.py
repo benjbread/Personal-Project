@@ -1,4 +1,6 @@
 import argparse
+import logging
+import logging.handlers
 from getpass import getpass
 
 from pwcheck.report import (
@@ -8,11 +10,21 @@ from pwcheck.report import (
     small_report,
 )
 
+LOGFILE = "LOGFILE.out"
+FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
+logging.basicConfig(
+    filename=LOGFILE,
+    level=logging.INFO,
+    format=FORMAT,
+)
+
+# Create module-level logger
+mylogger = logging.getLogger(__name__)
+
 # Create the ArgurmentParser object with short description
 parser = argparse.ArgumentParser(
     description="This is a password strength check sample program"
 )
-
 # add CLI arguements to not check pwned and/or give more verbose report
 parser.add_argument(
     "--no-pwned",
@@ -29,8 +41,10 @@ parser.add_argument(
     dest="verbose_output",
     help="Provide most detailed password report.",
 )
-
 args = parser.parse_args()
+mylogger.info(
+    f"Ran with --no-pwned: {args.run_pwned}, verbose: {args.verbose_output}"
+)
 
 
 # Prints the report dict in a more human readable format
@@ -78,15 +92,17 @@ def print_report(report: dict) -> None:
     print("-" * 25 + "\n")
 
     # Pwned Test Report Output
-    print("-" * 25)
     if "pwned" in report:
+        print("-" * 25)
         if report["pwned"] is False:
             print("HaveIBeenPwned Test: PASSED")
-        if report["pwned"] is True:
+        elif report["pwned"] is True:
             print("HaveIBeenPwned Test: FAILED")
             if "pwned reason" in report:
                 print(f"Reason: {report['pwned reason']}")
-    print("-" * 25 + "\n")
+        else:
+            print("HaveIBeenPwned Test: COULD NOT COMPLETE")
+        print("-" * 25 + "\n")
 
 
 def main():
